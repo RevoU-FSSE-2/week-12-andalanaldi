@@ -1,14 +1,15 @@
-import { Card, Text } from '../../components';
-import { Input, Button } from 'antd';
+import { Card, Text, TextAlert, AppLayout } from '../../components';
+import { Input, Button, DatePicker } from 'antd';
 import { useState } from 'react'
 import { useFormik } from 'formik';
-import * as yup from 'yup'
+import * as yup from 'yup';
+import dayjs from "dayjs"
 
 //Field replaced by useFormik
 interface Reg {
     name: string;
     email: string;
-    date?: number;
+    date: string;
     address: string;
     city: string;
     state: string;
@@ -20,7 +21,7 @@ interface Reg {
 const initialValues = {
     name: '',
     email: '',
-    date: undefined,
+    date: '',
     address: '',
     city: '',
     state: '',
@@ -29,15 +30,14 @@ const initialValues = {
     password: ''
 }
 
+const birthDate = dayjs().subtract(5, "year").format("YYYY-MM-DD")
+
 const validationSchema = yup.object().shape({
     name: yup.string().required('Full name required'),
     email: yup.string().email('email is invalid').required('email required'),
     date: yup.date()
+             .max(birthDate,"You must be at least 5 years old to register")
              .required('date of birth is necessary'),
-            //  .nullable()
-            //  .test('Date of Birth', 'Should be greather than 18', function(value) {
-            //    return moment().diff(moment(value), 'years') >= 18;
-            //  }),
     address: yup.string().required('address required'),
     city: yup.string().required('city required'),
     state: yup.string().required('state/province required'),
@@ -102,6 +102,7 @@ const FormRegis = () => {
 
     return (
         <>
+        <AppLayout>
         {step === 1 && (
         <Card title={'Personal Information'}>
             <form onSubmit={FormMik.handleSubmit}>
@@ -113,7 +114,7 @@ const FormRegis = () => {
                         status={FormMik.errors.name && 'error'}
                     />
                     {FormMik.errors.name && (
-                        <Text>{FormMik.errors.name}</Text>
+                        <TextAlert>{FormMik.errors.name}</TextAlert>
                     )}
                 </div>
                 <div>
@@ -124,18 +125,22 @@ const FormRegis = () => {
                         status={FormMik.errors.email && 'error'}
                     />
                     {FormMik.errors.email && (
-                        <Text>{FormMik.errors.email}</Text>
+                        <TextAlert>{FormMik.errors.email}</TextAlert>
                     )}
                 </div>
                 <div>
                     <Text>Date of Birth:</Text>
-                    <Input name={'date'} id={'date'} 
-                    value={FormMik.values.date}
-                    onChange={FormMik.handleChange('date')}
+                    <DatePicker name={'date'} id={'date'} 
+                    format={"YYYY-MM-DD"}
+                    value={FormMik.values.date ? dayjs(FormMik.values.date) : null}
+                    defaultValue={FormMik.values.date ? dayjs(FormMik.values.date) : undefined}
+                    onChange={(_, dateString) => 
+                        FormMik.setFieldValue('date', dateString)
+                    }
                     status={FormMik.errors.date && 'error'}
                     />
                     {FormMik.errors.date && (
-                        <Text>{FormMik.errors.date}</Text>
+                        <TextAlert>{FormMik.errors.date}</TextAlert>
                     )}
                 </div>
             </form>
@@ -152,7 +157,7 @@ const FormRegis = () => {
                     status={FormMik.errors.address && 'error'}
                     />
                     {FormMik.errors.address && (
-                        <Text>{FormMik.errors.address}</Text>
+                        <TextAlert>{FormMik.errors.address}</TextAlert>
                     )}            
                 </div>
                 <div>
@@ -163,7 +168,7 @@ const FormRegis = () => {
                         status={FormMik.errors.city && 'error'}
                     />
                     {FormMik.errors.city && (
-                        <Text>{FormMik.errors.city}</Text>
+                        <TextAlert>{FormMik.errors.city}</TextAlert>
                     )}
                 </div>
                 <div>
@@ -174,7 +179,7 @@ const FormRegis = () => {
                         status={FormMik.errors.state && 'error'}
                     />
                     {FormMik.errors.state && (
-                        <Text>{FormMik.errors.state}</Text>
+                        <TextAlert>{FormMik.errors.state}</TextAlert>
                     )}
                 </div>
                 <div>
@@ -185,7 +190,7 @@ const FormRegis = () => {
                     status={FormMik.errors.zip && 'error'}
                     />
                     {FormMik.errors.zip && (
-                        <Text>{FormMik.errors.zip}</Text>
+                        <TextAlert>{FormMik.errors.zip}</TextAlert>
                     )}
                 </div>
             </form>
@@ -202,7 +207,7 @@ const FormRegis = () => {
                         status={FormMik.errors.user && 'error'}
                     />
                     {FormMik.errors.user && (
-                        <Text>{FormMik.errors.user}</Text>
+                        <TextAlert>{FormMik.errors.user}</TextAlert>
                     )}
                 </div>
                 <div>
@@ -213,7 +218,7 @@ const FormRegis = () => {
                         status={FormMik.errors.password && 'error'}
                     />
                     {FormMik.errors.password && (
-                        <Text>{FormMik.errors.password}</Text>
+                        <TextAlert>{FormMik.errors.password}</TextAlert>
                     )}
                 </div>
                 <Button type={'primary'} htmlType={"submit"}>Submit</Button>
@@ -233,11 +238,10 @@ const FormRegis = () => {
             {step === 3 && (
                 <Button onClick={handlePrevAddress}>Back</Button>
             )}
-        </div> 
+        </div>
+        </AppLayout> 
         </>        
     )
 }
 
 export default FormRegis
-
-

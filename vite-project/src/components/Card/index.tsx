@@ -9,7 +9,7 @@ interface Props {
 const Card = ({title, children} : Props) => {
 
     return (
-        <BaseCard  title={title}>
+        <BaseCard  title={title} style={{ width: 300 }}>
             {children}
         </BaseCard>
     )

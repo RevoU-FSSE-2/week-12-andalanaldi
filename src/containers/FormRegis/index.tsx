@@ -1,4 +1,4 @@
-import { Card, Text, TextAlert, AppLayout } from '../../components';
+import { Card, Text, TextAlert, AppLayout, Responsive } from '../../components';
 import { Input, Button, DatePicker } from 'antd';
 import { useState } from 'react'
 import { useFormik } from 'formik';
@@ -99,9 +99,11 @@ const FormRegis = () => {
     }
 
     // const isError = !!FormMik.errors.name
+    // Responsive children={undefined}
 
     return (
         <>
+        <Responsive>
         <AppLayout>
         {step === 1 && (
         <Card title={'Personal Information'}>
@@ -239,7 +241,8 @@ const FormRegis = () => {
                 <Button onClick={handlePrevAddress}>Back</Button>
             )}
         </div>
-        </AppLayout> 
+        </AppLayout>
+        </Responsive> 
         </>        
     )
 }

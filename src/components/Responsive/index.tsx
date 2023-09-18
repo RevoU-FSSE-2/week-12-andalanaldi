@@ -16,7 +16,3 @@ const Responsive = ({ children }: ResponsiveProps) => (
 );
 
 export default Responsive
-
-{/*
-   Default grid responsive setting from antd <Col xs={2} sm={4} md={6} lg={8} xl={10}>
-*/}

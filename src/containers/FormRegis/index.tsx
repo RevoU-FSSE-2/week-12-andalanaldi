@@ -4,8 +4,6 @@ import { useState } from 'react'
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import dayjs from "dayjs"
-
-//Field replaced by useFormik
 interface Reg {
     name: string;
     email: string;
@@ -97,9 +95,6 @@ const FormRegis = () => {
 
         return
     }
-
-    // const isError = !!FormMik.errors.name
-    // Responsive children={undefined}
 
     return (
         <>
